@@ -1,75 +1,53 @@
-<?php get_header(); ?>
-	
-<div class="content">
+<?php
+/**
+ * The template for displaying archive pages
+ *
+ * @link https://codex.wordpress.org/Template_Hierarchy
+ *
+ * @package Ignis
+ */
 
-    <div class="page-title">
+get_header();
 
-        <h4>
+$layout = ignis_blog_layout();
 
-            <?php if ( is_day() ) : ?>
-                <?php _e( 'Date', 'wilson' ); ?><span class="name"><?php echo get_the_date(); ?></span>
+?>
 
-            <?php elseif ( is_month() ) : ?>
-                <?php _e( 'Month', 'wilson' ); ?><span class="name"><?php echo get_the_date( 'F Y' ); ?></span>
+	<div id="primary" class="content-area col-md-8 <?php echo esc_attr( $layout ); ?>">
+		<main id="main" class="site-main" role="main">
 
-            <?php elseif ( is_year() ) : ?>
-                <?php _e( 'Year', 'wilson' ); ?><span class="name"><?php echo get_the_date( 'Y' ); ?></span>
+		<?php
+		if ( have_posts() ) : ?>
+			<div class="posts-loop">
+			<?php
+			/* Start the Loop */
+			while ( have_posts() ) : the_post();
 
-            <?php elseif ( is_category() ) : ?>
-                <?php _e( 'Category', 'wilson' ); ?><span class="name"><?php echo single_cat_title( '', false ); ?></span>
+				/*
+				 * Include the Post-Format-specific template for the content.
+				 * If you want to override this in a child theme, then include a file
+				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
+				 */
+				get_template_part( 'template-parts/content', get_post_format() );
 
-            <?php elseif ( is_tag() ) : ?>
-                <?php _e( 'Tag', 'wilson' ); ?><span class="name"><?php echo single_tag_title( '', false ); ?></span>
+			endwhile; ?>
 
-            <?php elseif ( is_author() ) : ?>
-                <?php $curauth = ( isset($_GET['author_name']) ? get_user_by( 'slug', $author_name ) : get_userdata( intval( $author ) ) ); ?>
-                <?php _e( 'Author', 'wilson' ); ?><span class="name"><?php echo $curauth->display_name; ?></span>
+			</div>
+			<?php
 
-            <?php else : ?>
-                <?php _e( 'Archive', 'wilson' ); ?>
+			the_posts_navigation();
 
-            <?php endif; ?>
+		else :
 
-        </h4>
+			get_template_part( 'template-parts/content', 'none' );
 
-        <?php
-            if ( ! empty( tag_description() ) ) {
-                echo apply_filters( 'tag_archive_meta', tag_description() );
-            }
-        ?>
+		endif; ?>
 
-    </div> <!-- .page-title -->
+		</main><!-- #main -->
+	</div><!-- #primary -->
 
-    <div class="posts">
-
-        <?php if ( have_posts() ) : ?>
-
-            <?php while ( have_posts() ) : the_post(); ?>
-
-                <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
-                    <?php get_template_part( 'content', get_post_format() ); ?>
-
-                </div> <!-- .post -->
-
-            <?php endwhile; ?>
-
-    </div> <!-- .posts -->
-
-    <?php if ( $wp_query->max_num_pages > 1 ) : ?>
-
-        <div class="archive-nav">
-
-            <?php echo get_next_posts_link( __('Older<span> posts</span>', 'wilson' ) ); ?>
-
-            <?php echo get_previous_posts_link( __('Newer<span> posts</span>', 'wilson' ) ); ?>
-
-            <div class="clear"></div>
-
-        </div> <!-- .post-nav archive-nav -->
-
-    <?php endif; ?>
-
-<?php endif; ?>
-
-<?php get_footer(); ?>
+<?php
+if ( $layout !== 'masonry-fullwidth' ) {
+	get_sidebar();
+}
+get_footer();

@@ -1,103 +1,99 @@
-<?php if ( post_password_required() ) return; ?>
+<?php
+/**
+ * The template for displaying comments
+ *
+ * This is the template that displays the area of the page that contains both the current comments
+ * and the comment form.
+ *
+ * @link https://codex.wordpress.org/Template_Hierarchy
+ *
+ * @package Ignis
+ */
 
-<?php if ( have_comments() ) : ?>
-
-    <div class="comments">
-
-        <h2 class="comments-title" id="comments">
-
-            <?php printf( _n( '%s Comment', '%s Comments', count( $wp_query->comments_by_type[comment] ), 'wilson' ), count( $wp_query->comments_by_type[comment] ) ); ?>
-
-        </h2>
-
-        <ol class="commentlist">
-        
-            <?php 
-                wp_list_comments( array( 
-                    'callback'  => 'wilson_comment',
-                    'type'      => 'comment'
-                ) ); 
-            ?>
-            
-        </ol> <!-- .commentlist -->
-
-        <?php if ( ! empty( $comments_by_type['pings'] ) ) : ?>
-
-            <div class="pingbacks">
-
-                <div class="pingbacks-inner">
-
-                    <h3 class="pingbacks-title">
-                    
-                        <?php printf( _n( '%s Pingback', '%s Pingbacks', count( $wp_query->comments_by_type[pings] ), 'wilson' ), count( $wp_query->comments_by_type[pings] ) ); ?>
-
-                    </h3>
-
-                    <ol class="pingbacklist">
-                    
-                        <?php 
-                            wp_list_comments( array(  
-                                'callback'  => 'wilson_comment',
-                                'type'      => 'pings'
-                            ) ); 
-                        ?>
-                        
-                    </ol> <!-- .pingbacklist -->
-
-                </div> <!-- .pingbacks-inner -->
-
-            </div> <!-- .pingbacks -->
-
-        <?php endif; ?>
-
-        <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : ?>
-
-            <div class="comment-nav-below" role="navigation">
-
-                <div class="post-nav-older"><?php previous_comments_link( __( '&laquo; Older<span> Comments</span>', 'wilson' ) ); ?></div>
-
-                <div class="post-nav-newer"><?php next_comments_link( __( 'Newer<span> Comments</span> &raquo;', 'wilson' ) ); ?></div>
-
-                <div class="clear"></div>
-
-            </div> <!-- .comment-nav-below -->
-
-        <?php endif; ?>
-
-    </div> <!-- .comments -->
-
-<?php endif; ?>
-
-<?php if ( ! comments_open() && !is_page() ) : ?>
-
-    <p class="nocomments">
-        <?php _e( 'Comments are closed.', 'wilson' ); ?>
-    </p>
-
-<?php endif; ?>
-
-<?php $comments_args = array(
-
-    'comment_notes_before' => 
-        '<p class="comment-notes">' . __( 'Your email address will not be published.', 'wilson' ) . '</p>',
-
-    'comment_field' => 
-        '<p class="comment-form-comment"><textarea id="comment" name="comment" cols="45" rows="6" required>' . '</textarea></p>',
-
-    'fields' => apply_filters( 'comment_form_default_fields', array(
-
-        'author' =>
-            '<p class="comment-form-author">' .
-            '<input id="author" name="author" type="text" placeholder="' . __( 'Name', 'wilson' ) . '" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30" />' . '<label for="author">' . __( 'Author', 'wilson' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '</p>',
-
-        'email' =>
-            '<p class="comment-form-email">' . '<input id="email" name="email" type="text" placeholder="' . __('Email','wilson') . '" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" size="30" /><label for="email">' . __( 'Email', 'wilson' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '</p>',
-
-        'url' =>
-        '<p class="comment-form-url">' . '<input id="url" name="url" type="text" placeholder="' . __( 'Website', 'wilson' ) . '" value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" /><label for="url">' . __( 'Website', 'wilson' ) . '</label></p>')
-    ),
-);
-
-comment_form( $comments_args );
-
+/*
+ * If the current post is protected by a password and
+ * the visitor has not yet entered the password we will
+ * return early without loading the comments.
+ */
+if ( post_password_required() ) {
+	return;
+}
 ?>
+
+<div id="comments" class="comments-area">
+
+	<?php
+	// You can start editing here -- including this comment!
+	if ( have_comments() ) : ?>
+		<h2 class="comments-title">
+			<?php
+				$comments_number = get_comments_number();
+				if ( '1' === $comments_number ) {
+					/* translators: %s: post title */
+					printf( _x( 'One thought to &ldquo;%s&rdquo;', 'comments title', 'ignis' ), get_the_title() );
+				} else {
+					printf(
+						/* translators: 1: number of comments, 2: post title */
+						_nx(
+							'%1$s Thought to &ldquo;%2$s&rdquo;',
+							'%1$s Thoughts to &ldquo;%2$s&rdquo;',
+							$comments_number,
+							'comments title',
+							'ignis'
+						),
+						number_format_i18n( $comments_number ),
+						get_the_title()
+					);
+				}
+			?>
+		</h2><!-- .comments-title -->
+
+		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
+		<nav id="comment-nav-above" class="navigation comment-navigation" role="navigation">
+			<h2 class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'ignis' ); ?></h2>
+			<div class="nav-links">
+
+				<div class="nav-previous"><?php previous_comments_link( esc_html__( 'Older Comments', 'ignis' ) ); ?></div>
+				<div class="nav-next"><?php next_comments_link( esc_html__( 'Newer Comments', 'ignis' ) ); ?></div>
+
+			</div><!-- .nav-links -->
+		</nav><!-- #comment-nav-above -->
+		<?php endif; // Check for comment navigation. ?>
+
+		<ol class="comment-list">
+			<?php
+				wp_list_comments( array(
+					'style'      => 'ol',
+					'short_ping' => true,
+					'avatar_size'=> 60,
+				) );
+			?>
+		</ol><!-- .comment-list -->
+
+		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
+		<nav id="comment-nav-below" class="navigation comment-navigation" role="navigation">
+			<h2 class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'ignis' ); ?></h2>
+			<div class="nav-links">
+
+				<div class="nav-previous"><?php previous_comments_link( esc_html__( 'Older Comments', 'ignis' ) ); ?></div>
+				<div class="nav-next"><?php next_comments_link( esc_html__( 'Newer Comments', 'ignis' ) ); ?></div>
+
+			</div><!-- .nav-links -->
+		</nav><!-- #comment-nav-below -->
+		<?php
+		endif; // Check for comment navigation.
+
+	endif; // Check for have_comments().
+
+
+	// If comments are closed and there are comments, let's leave a little note, shall we?
+	if ( ! comments_open() && get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) : ?>
+
+		<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'ignis' ); ?></p>
+	<?php
+	endif;
+
+	comment_form();
+	?>
+
+</div><!-- #comments -->

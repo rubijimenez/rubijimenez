@@ -1,15 +1,12 @@
 <?php
-/**
- * The template for displaying all single posts
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
- *
- * @package Ignis
- */
+/*
+Template Name: No sidebar
+Template Post Type: post, jetpack-portfolio
+*/
 
 get_header(); ?>
 
-	<div id="primary" class="content-area col-md-8">
+	<div id="primary" class="content-area col-md-10 nosidebar">
 		<main id="main" class="site-main" role="main">
 
 		<?php
@@ -31,5 +28,4 @@ get_header(); ?>
 	</div><!-- #primary -->
 
 <?php
-get_sidebar();
 get_footer();

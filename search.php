@@ -1,67 +1,53 @@
-<?php get_header(); ?>
-	
-<div class="content">
-	
-    <div class="page-title">
+<?php
+/**
+ * The template for displaying search results
+ *
+ * @link https://codex.wordpress.org/Template_Hierarchy
+ *
+ * @package Ignis
+ */
 
-        <h4>
+get_header();
 
-            <?php _e( 'Search', 'wilson' ); ?><span class="name">"<?php echo get_search_query(); ?>"</span>
+$layout = ignis_blog_layout();
 
-        </h4>
+?>
 
-    </div> <!-- .page-title -->
-				
-    <div class="posts">
+	<div id="primary" class="content-area col-md-8 <?php echo esc_attr( $layout ); ?>">
+		<main id="main" class="site-main" role="main">
 
-        <?php if ( have_posts() ) : ?>
+		<?php
+		if ( have_posts() ) : ?>
+			<div class="posts-loop">
+			<?php
+			/* Start the Loop */
+			while ( have_posts() ) : the_post();
 
-            <?php while ( have_posts() ) : the_post(); ?>
+				/*
+				 * Include the Post-Format-specific template for the content.
+				 * If you want to override this in a child theme, then include a file
+				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
+				 */
+				get_template_part( 'template-parts/content', get_post_format() );
 
-                <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+			endwhile; ?>
 
-                    <?php get_template_part( 'content', get_post_format() ); ?>						
+			</div>
+			<?php
 
-                </div> <!-- .post -->
+			the_posts_navigation();
 
-            <?php endwhile; ?>
+		else :
 
-        <?php else : ?>
+			get_template_part( 'template-parts/content', 'none' );
 
-            <div class="post">
+		endif; ?>
 
-                <div class="post-inner">
+		</main><!-- #main -->
+	</div><!-- #primary -->
 
-                    <div class="post-content">
-
-                        <p><?php _e('No results. Try again, would you kindly?', 'wilson'); ?></p>
-
-                        <?php get_search_form(); ?>
-
-                    </div> <!-- .post-content -->
-
-                </div> <!-- .post-inner -->
-
-                <div class="clear"></div>
-
-            </div> <!-- .post -->
-
-        <?php endif; ?>
-
-    </div> <!-- .posts -->
-
-    <?php if ( $wp_query->max_num_pages > 1 ) : ?>
-
-        <div class="post-nav archive-nav">
-
-            <?php echo get_next_posts_link( __( '&laquo; Older<span> posts</span>', 'wilson' ) ); ?>
-
-            <?php echo get_previous_posts_link( __( 'Newer<span> posts</span> &raquo;', 'wilson' ) ); ?>
-
-            <div class="clear"></div>
-
-        </div>
-
-    <?php endif; ?>
-		
-<?php get_footer(); ?>
+<?php
+if ( $layout !== 'masonry-fullwidth' ) {
+	get_sidebar();
+}
+get_footer();

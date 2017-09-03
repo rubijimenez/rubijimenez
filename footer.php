@@ -1,64 +1,42 @@
-		<div class="footer section large-padding bg-dark">
-		
-			<?php if ( is_active_sidebar( 'footer-a' ) ) : ?>
-			
-				<div class="column column-1 left">
-				
-					<div class="widgets">
-			
-						<?php dynamic_sidebar( 'footer-a' ); ?>
-											
-					</div> <!-- .widgets -->
-					
-				</div> <!-- .column-1 -->
-				
-			<?php endif; // footer-a ?>
-				
-			<?php if ( is_active_sidebar( 'footer-b' ) ) : ?>
-			
-				<div class="column column-2 left">
-				
-					<div class="widgets">
-			
-						<?php dynamic_sidebar( 'footer-b' ); ?>
-											
-					</div> <!-- .widgets -->
-					
-				</div> <!-- .column-2 -->
-				
-			<?php endif; // footer-b ?>
-			
-			<div class="clear"></div>
-		
-		</div> <!-- .footer -->
-		
-		<div class="credits">
-		
-			<div class="credits-inner">
-			
-				<p class="credits-left">
-				
-					&copy; <?php echo date( 'Y' ); ?> <a href="<?php echo home_url(); ?>" title="<?php bloginfo( 'name' ); ?>"><?php bloginfo( 'name' ); ?></a>
-				
-				</p>
-				
-				<p class="credits-right">
-					
-					<span><?php printf( __( 'Theme by %s', 'wilson'), '<a href="http://www.andersnoren.se">Anders Nor&eacute;n</a>' ); ?></span> &mdash; <a title="<?php _e( 'To the top', 'wilson' ); ?>" class="tothetop"><?php _e( 'Up', 'wilson' ); ?> &uarr;</a>
-					
-				</p>
-				
-				<div class="clear"></div>
-			
-			</div> <!-- .credits-inner -->
-			
-		</div> <!-- .credits -->
-	
-	</div> <!-- .content -->
-	
-	<div class="clear"></div>
-	
-</div> <!-- .wrapper -->
+<?php
+/**
+ * The template for displaying the footer
+ *
+ * Contains the closing of the #content div and all content after.
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
+ *
+ * @package Ignis
+ */
+
+?>
+		</div><!-- .container -->
+	</div><!-- #content -->
+
+
+	<footer id="colophon" class="site-footer clearfix" role="contentinfo">
+		<?php do_action( 'ignis_footer' ); ?> 
+		<nav class="social-navigation clearfix">
+		<div class="container">
+		<ul id="menu-social" class="menu clearfix">
+		<li id="menu-item-935" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-935">
+		<a href="https://facebook.com/rubijimenez.co" target="_blank"></a>	
+		</li>
+		<li id="menu-item-936" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-936">
+		<a href="https://twitter.com/rubbsz" target="_blank"></a>	
+		</li>
+		<li id="menu-item-938" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-938">
+		<a href="https://linkedin.com/in/rubijimenez"></a>	
+		</li>
+		<li class="menu-item menu-item-type-custom menu-item-object-custom .icon-instagram">
+		<a href="https://instagram.com/rubijimenezm"></a>
+		</li>
+		</ul>		
+		</div>
+		</nav>
+		<p></p>
+	</footer><!-- #colophon -->
+</div><!-- #page -->
 
 <?php wp_footer(); ?>
 

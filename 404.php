@@ -1,31 +1,32 @@
-<?php get_header(); ?>
+<?php
+/**
+ * The template for displaying 404 pages (not found)
+ *
+ * @link https://codex.wordpress.org/Creating_an_Error_404_Page
+ *
+ * @package Ignis
+ */
 
-<div class="content">
+get_header(); ?>
 
-	<div class="posts">
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
 
-		<div class="post">
-		
-			<div class="post-inner">
-				                
-				<div class="post-header">
-				        
-		        	<h1 class="post-title"><?php _e( 'Error 404', 'wilson' ); ?></h1>
-		        	
-		        </div> <!-- .post-header -->
-			                                                	            
-		        <div class="post-content">
-		        	            
-		            <p><?php _e( "It seems like you have tried to open a page that doesn't exist. It could have been deleted, moved, or it never existed at all. You are welcome to search for what you are looking for with the form below.", "wilson" ); ?></p>
-		            
-		            <?php get_search_form(); ?>
-		            
-		        </div> <!-- .post-content -->
-	        
-			</div> <!-- .post-inner -->
-	        		            	                        	
-		</div> <!-- .post -->
-	
-	</div> <!-- .posts -->
+			<section class="error-404 not-found">
+				<header class="page-header">
+					<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'ignis' ); ?></h1>
+				</header><!-- .page-header -->
 
-<?php get_footer(); ?>
+				<div class="page-content">
+					<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try searching below?', 'ignis' ); ?></p>
+
+					<?php get_search_form(); ?>
+
+				</div><!-- .page-content -->
+			</section><!-- .error-404 -->
+
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+<?php
+get_footer();
